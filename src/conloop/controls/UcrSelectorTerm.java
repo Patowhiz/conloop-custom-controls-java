@@ -30,26 +30,26 @@ public class UcrSelectorTerm extends UcrSelectorCombobox<UcrSelectorTerm.Term> {
 
         //temporary check for 2021 academic COVID-19 calendar changes.
         //todo. remove once academic year resumes to be like normal year
-        int currentYear = CalendarDateUtil.getCurrentYear(); 
-        int currentTerm = CalendarDateUtil.getCurrentTerm();
-
-        if (currentYear == 2021) {
-            switch (currentTerm) {
-                case 1:
-                    currentTerm = 2;//reset back to term 2
-                    break;
-                case 2:
-                    currentTerm = 3;//reset back to term 3. Form 2 and 3 will be in term 3
-                    break;
-                case 3:
-                    currentTerm = 1;//reset back to term 1. Form 1, 2 and 3 will be in term 1
-                    break;
-                default:
-                    break;
-            }
-        }//end if
+//        int currentYear = CalendarDateUtil.getCurrentYear(); 
+//        int currentTerm = CalendarDateUtil.getCurrentTerm();
+//
+//        if (currentYear == 2021) {
+//            switch (currentTerm) {
+//                case 1:
+//                    currentTerm = 2;//reset back to term 2
+//                    break;
+//                case 2:
+//                    currentTerm = 3;//reset back to term 3. Form 2 and 3 will be in term 3
+//                    break;
+//                case 3:
+//                    currentTerm = 1;//reset back to term 1. Form 1, 2 and 3 will be in term 1
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }//end if
         
-        setValue(currentTerm);
+        setValue(CalendarDateUtil.getCurrentKenyaAcademicTerm());
     }
 
     @Override

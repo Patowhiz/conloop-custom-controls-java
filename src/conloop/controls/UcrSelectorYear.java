@@ -27,12 +27,12 @@ public class UcrSelectorYear extends UcrSelectorCombobox<Integer> {
 
             //temporary check for 2021 academic COVID-19 calendar changes
             //todo. remove once academic year resumes to be like normal year
-            int currentYear = CalendarDateUtil.getCurrentYear();
-            if (currentYear == 2021 && CalendarDateUtil.getCurrentTerm() < 3) {
-                currentYear = currentYear - 1;//reset back to 2020 as selected year
-            }
+//            int currentYear = CalendarDateUtil.getCurrentYear();
+//            if (currentYear == 2021 && CalendarDateUtil.getCurrentTerm() < 3) {
+//                currentYear = currentYear - 1;//reset back to 2020 as selected year
+//            }
 
-            setValue(currentYear);
+            setValue(CalendarDateUtil.getCurrentKenyaAcademicYear());
         } catch (Exception ex) {
             CustomAlerts.showDeveloperErrorAlert("Error occurred in loading teachers into the combobox", ex);
         }//end try
