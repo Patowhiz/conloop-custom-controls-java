@@ -27,6 +27,7 @@ public class UcrSelectorGeneral extends UcrSelectorCombobox {
 
     @Override
     public void populateControl() {
+        selectFirst();
     }
 
     @Override
