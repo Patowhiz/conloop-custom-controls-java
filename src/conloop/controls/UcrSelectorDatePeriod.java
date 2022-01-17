@@ -1,27 +1,24 @@
 package conloop.controls;
 
 import conloop.CalendarDateUtil;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox; 
+import javafx.scene.control.ComboBox;
 
 /**
  *
  * @author PatoWhiz 16/09/2019 11:04 PM
  */
-public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
+public class UcrSelectorDatePeriod extends UcrSelectorCombobox<String> {
 
-    private final ObservableList<String> lstValues;
+    //private final ObservableList<String> getControl();
     public boolean bIncludeCustomPeriod;
     public boolean bIncludeTerm;
     public boolean bIncludeQuarter;
 
-    public UcrSelectorDatePeriod(ComboBox<Object> cbo) {
+    public UcrSelectorDatePeriod(ComboBox<String> cbo) {
         super(cbo);
         setTooltip("Selects period");
-        lstValues = FXCollections.observableArrayList();
+        //lstValues = FXCollections.observableArrayList();
         bIncludeCustomPeriod = false;
         bIncludeQuarter = false;
         bIncludeTerm = false;
@@ -29,111 +26,98 @@ public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
     }
 
     public void datePickersToControl(UcrDatePicker ucrDateFrom, UcrDatePicker ucrDateTo) {
-        getControl().valueProperty().addListener(new ChangeListener<Object>() {
-            @Override
-            public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
-                if (bSuppressEvents) {
-                    return;
-                }
-
-                if (!bValidate) {
-                    return;
-                }
-
-                if (newValue == null) {
-                    return;
-                }
-
-                String periodName = newValue.toString();
-                ucrDateFrom.bSuppressEvents = true;//we want to raise after setting both values
-                ucrDateTo.bSuppressEvents = true;
-                switch (periodName) {
-                    case "Today":
-                        ucrDateFrom.setValue(CalendarDateUtil.getTodayDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getTodayDate());
-                        break;
-                    case "Yesterday":
-                        ucrDateFrom.setValue(CalendarDateUtil.getYesterdayDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getYesterdayDate());
-                        break;
-                    case "This week":
-                        ucrDateFrom.setValue(CalendarDateUtil.getCurrentWeekMondayDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getCurrentWeekSaturdayDate());
-                        break;
-                    case "Last week":
-                        ucrDateFrom.setValue(CalendarDateUtil.getLastWeekMondayDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getLastWeekMondayDate());
-                        break;
-                    case "This Month":
-                        ucrDateFrom.setValue(CalendarDateUtil.getCurrentMonthStartDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getCurrentMonthEndDate());
-                        break;
-                    case "Last Month":
-                        ucrDateFrom.setValue(CalendarDateUtil.getLastMonthStartDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getLastMonthEndDate());
-                        break;
-                    case "This Quarter":
-                        //TODO.
-                        break;
-                    case "This Term":
-                        ucrDateFrom.setValue(CalendarDateUtil.getCurrentTermStartDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getCurrentTermEndDate());
-                        break;
-                    case "Term 1":
-                        ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(1));
-                        ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(1));
-                        break;
-                    case "Term 2":
-                        ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(2));
-                        ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(2));
-                        break;
-                    case "Term 3":
-                        ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(3));
-                        ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(3));
-                        break;
-                    case "This Year":
-                        ucrDateFrom.setValue(CalendarDateUtil.getCurrentYearStartDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getCurrentYearEndDate());
-                        break;
-                    case "Last Year":
-                        ucrDateFrom.setValue(CalendarDateUtil.getLastYearStartDate());
-                        ucrDateTo.setValue(CalendarDateUtil.getLastYearEndDate());
-                        break;
-                    default:
-                        break;
-                }
-                ucrDateFrom.bSuppressEvents = false;
-                ucrDateTo.bSuppressEvents = false;
-                ucrDateTo.raiseValueChangedEvent();
-
+        getControl().valueProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (bSuppressEvents) {
+                return;
             }
+
+            if (!bValidate) {
+                return;
+            }
+
+            if (newValue == null) {
+                return;
+            }
+
+            String periodName = newValue;
+            ucrDateFrom.bSuppressEvents = true;//we want to raise after setting both values
+            ucrDateTo.bSuppressEvents = true;
+            switch (periodName) {
+                case "Today":
+                    ucrDateFrom.setValue(CalendarDateUtil.getTodayDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getTodayDate());
+                    break;
+                case "Yesterday":
+                    ucrDateFrom.setValue(CalendarDateUtil.getYesterdayDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getYesterdayDate());
+                    break;
+                case "This week":
+                    ucrDateFrom.setValue(CalendarDateUtil.getCurrentWeekMondayDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getCurrentWeekSaturdayDate());
+                    break;
+                case "Last week":
+                    ucrDateFrom.setValue(CalendarDateUtil.getLastWeekMondayDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getLastWeekMondayDate());
+                    break;
+                case "This Month":
+                    ucrDateFrom.setValue(CalendarDateUtil.getCurrentMonthStartDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getCurrentMonthEndDate());
+                    break;
+                case "Last Month":
+                    ucrDateFrom.setValue(CalendarDateUtil.getLastMonthStartDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getLastMonthEndDate());
+                    break;
+                case "This Quarter":
+                    //TODO.
+                    break;
+                case "This Term":
+                    ucrDateFrom.setValue(CalendarDateUtil.getCurrentTermStartDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getCurrentTermEndDate());
+                    break;
+                case "Term 1":
+                    ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(1));
+                    ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(1));
+                    break;
+                case "Term 2":
+                    ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(2));
+                    ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(2));
+                    break;
+                case "Term 3":
+                    ucrDateFrom.setValue(CalendarDateUtil.getTermStartDate(3));
+                    ucrDateTo.setValue(CalendarDateUtil.getTermEndDate(3));
+                    break;
+                case "This Year":
+                    ucrDateFrom.setValue(CalendarDateUtil.getCurrentYearStartDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getCurrentYearEndDate());
+                    break;
+                case "Last Year":
+                    ucrDateFrom.setValue(CalendarDateUtil.getLastYearStartDate());
+                    ucrDateTo.setValue(CalendarDateUtil.getLastYearEndDate());
+                    break;
+                default:
+                    break;
+            }
+            ucrDateFrom.bSuppressEvents = false;
+            ucrDateTo.bSuppressEvents = false;
+            ucrDateTo.raiseValueChangedEvent();
         });
     }
 
     private void loadPeriods() {
-        lstValues.clear();
+        getControl().getItems().clear();
         if (bIncludeCustomPeriod) {
-            lstValues.add("Custom");
+            getControl().getItems().add("Custom");
         }
-        lstValues.add("Today");
-        lstValues.add("Yesterday");
-        lstValues.add("This week");
-        lstValues.add("Last week");
-        lstValues.add("This Month");
-        lstValues.add("Last Month");
+        getControl().getItems().addAll("Today", "Yesterday", "This week", "Last week", "This Month", "Last Month");
 
         if (bIncludeQuarter) {
             //lstValues.add("This Quarter");//TODO
         }
         if (bIncludeTerm) {
-            lstValues.add("This Term");
-            lstValues.add("Term 1");
-            lstValues.add("Term 2");
-            lstValues.add("Term 3");
+            getControl().getItems().addAll("This Term", "Term 1", "Term 2", "Term 3");
         }
 
-        lstValues.add("This Year");
-        lstValues.add("Last Year");
+        getControl().getItems().addAll("This Year", "Last Year");
 
     }
 
@@ -148,13 +132,7 @@ public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
     @Override
     public void populateControl() {
         loadPeriods();
-
-        cboValues.setItems(lstValues);
-
-        //TODO
-        //MAKE IT REMEMBER WHAT THE PREVIOUS DIALOG HAD SELECTED INSTEAD OF SELECXTING FIRST
         selectFirst();
-
     }
 
     @Override
@@ -164,22 +142,22 @@ public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
 
     @Override
     public String getSelectedMember() {
-        return lstValues.get(cboValues.getSelectionModel().getSelectedIndex());
+        return getControl().getSelectionModel().getSelectedItem();
     }
 
     @Override
     public String getSelectedItem() {
-        return lstValues.get(cboValues.getSelectionModel().getSelectedIndex());
+        return getControl().getSelectionModel().getSelectedItem();
     }
 
     @Override
     public String getValue() {
-        int index = indexOf(cboValues.getValue());
+        int index = indexOf(getControl().getValue());
         if (index == -1) {
             return "";
         } else {
             //there should be no duplicates for this control
-            return lstValues.get(index);
+            return getControl().getItems().get(index);
         }//end outer if
 
     }
@@ -192,8 +170,8 @@ public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
     public void setValue(Object objValue) {
 
         String strMember = String.valueOf(objValue);
-        for (int i = 0; i < lstValues.size(); i++) {
-            if (lstValues.get(i).equalsIgnoreCase(strMember)) {
+        for (int i = 0; i < getControl().getItems().size(); i++) {
+            if (getControl().getItems().get(i).equalsIgnoreCase(strMember)) {
                 cboValues.getSelectionModel().select(i);
                 return;
             }
@@ -204,8 +182,8 @@ public class UcrSelectorDatePeriod extends UcrSelectorCombobox {
     public int indexOf(Object ObjValueToFind) {
         int index = -1;
         String strMember = String.valueOf(ObjValueToFind);
-        for (int i = 0; i < lstValues.size(); i++) {
-            if (lstValues.get(i).equalsIgnoreCase(strMember)) {
+        for (int i = 0; i < getControl().getItems().size(); i++) {
+            if (getControl().getItems().get(i).equalsIgnoreCase(strMember)) {
                 index = i;
                 break;
             }
