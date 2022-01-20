@@ -30,11 +30,11 @@ import org.controlsfx.control.spreadsheet.SpreadsheetView;
 public class UcrSpreadSheet extends UcrCoreControl {
 
     private SpreadsheetView spreadSheetView;
-    private ObservableList<String> lstRowMenuItems = FXCollections.observableArrayList();
-    private ObservableList<PickerEventListener> lstRowPickersMenuItemlistener = FXCollections.observableArrayList();
-    private PickerEventListener rowPickerMenuItemlistener;
-    private double mouseX;
-    private double mouseY;
+    protected ObservableList<String> lstRowMenuItems = FXCollections.observableArrayList();
+    protected ObservableList<PickerEventListener> lstRowPickersMenuItemlistener = FXCollections.observableArrayList();
+    protected PickerEventListener rowPickerMenuItemlistener;
+    protected double mouseX;
+    protected double mouseY;
 
     public UcrSpreadSheet(String... columnHeaders) {
         this(FXCollections.observableList(Arrays.asList(columnHeaders)));
@@ -52,7 +52,6 @@ public class UcrSpreadSheet extends UcrCoreControl {
         setShowColumnHeader(true);
         setShowRowHeader(true);
         setSelectionModeAsMultiple();
-
     }
 
     public UcrSpreadSheet(SpreadsheetView newSpreadSheetView) {
@@ -174,12 +173,16 @@ public class UcrSpreadSheet extends UcrCoreControl {
         this.lstRowMenuItems.add(positionIndex, menuElement);
     }
 
-    public void clearSpreadSheetRowMenuItems() {
+    public void clearRowPickerMenuItems() {
         this.lstRowMenuItems.clear();
     }
 
     public void addRowPickerMenuItemsListener(PickerEventListener listener) {
         this.lstRowPickersMenuItemlistener.add(listener);
+    }
+    
+     public void clearRowPickerMenuItemsListener() {
+        this.lstRowMenuItems.clear();
     }
 
     public ObservableMap<Integer, Picker> getRowPickers() {

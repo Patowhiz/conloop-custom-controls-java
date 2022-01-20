@@ -16,8 +16,7 @@ public class UcrSelectorMonth extends UcrSelectorCombobox {
 
     public UcrSelectorMonth(ComboBox<Object> cbo) {
         super(cbo);
-        setTooltip("Selects month");
-        cboValues.setEditable(true);
+        setTooltip("Selects month"); 
         lstValues = FXCollections.observableArrayList();
         bIncludeAllMonths = false; 
     }
