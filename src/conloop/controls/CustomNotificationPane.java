@@ -88,6 +88,8 @@ public class CustomNotificationPane {
      */
     public void showNotificationPane(String theMessage, EnumIcons enumIcon) {
         image = new ImageView(enumIcon.getUrl());
+        //notificationPane.hide();//to make it have the blinking effect incase it was already visible
+        //notificationPane.
         notificationPane.setGraphic(image);
         notificationPane.show(theMessage);
     } //end method

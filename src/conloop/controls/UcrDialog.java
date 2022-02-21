@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,7 +23,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities; 
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -34,6 +35,7 @@ public class UcrDialog {
     private String title;
     private String headerText;
     private Window window;
+    private boolean bResizable;
 
     public UcrDialog(Class classLoader) {
         frmLoader = new FXFormLoader(classLoader);
@@ -47,11 +49,11 @@ public class UcrDialog {
     }
 
     public UcrDialog(Class classLoader, Window window, String filePathAndName, String title, String headerText) {
-        this(classLoader,window, filePathAndName, title);
+        this(classLoader, window, filePathAndName, title);
         setHeaderText(headerText);
     }
 
-    public UcrDialog(Class classLoader , Window window, Parent rootNode, String title, String headerText) {
+    public UcrDialog(Class classLoader, Window window, Parent rootNode, String title, String headerText) {
         this(classLoader, window, "", title, headerText);
         setRootNode(rootNode);//for those that aleady have the root node inistialised
     }
@@ -87,6 +89,10 @@ public class UcrDialog {
         setHeaderText(headerText);
     }//end class
 
+    public void setResizable(boolean bResizable) {
+        this.bResizable = bResizable;
+    }
+
     public void showAndWait() throws IOException {
         // Create the custom dialog.
         Dialog<String> dialog = new Dialog<>();
@@ -95,6 +101,7 @@ public class UcrDialog {
         dialog.initOwner(window);
         dialog.initModality(window == null ? Modality.APPLICATION_MODAL : Modality.WINDOW_MODAL);
         dialog.getDialogPane().setContent(frmLoader.getRootNode());
+        dialog.setResizable(bResizable);
 
         //The below code is meant to make this dialog closeable via the close x on top of the window
         //For more abou this functionality check on CodeTobeUsedFxDialogSample method BELOW
@@ -102,6 +109,17 @@ public class UcrDialog {
         dialog.getDialogPane().getButtonTypes().add(buttonTypeCancel);
         dialog.getDialogPane().lookupButton(buttonTypeCancel).setVisible(false);
         dialog.setResultConverter((ButtonType b) -> "");
+
+        dialog.setOnHidden((DialogEvent event) -> {
+            try {
+                //todo. for some reasons. when many dialogs are opened the system slows down. check on why
+                dialog.getDialogPane().setContent(null);
+                dialog.close();
+            } catch (Exception ex) {
+                System.err.println("Error on hidden dialog: " + ex.getMessage());
+            }
+        });
+
         dialog.showAndWait();
 
     }//end method
