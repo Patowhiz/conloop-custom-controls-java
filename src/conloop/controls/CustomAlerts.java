@@ -92,6 +92,10 @@ public class CustomAlerts {
     public static void showErrorAlert(Window window, String headerText, String contentText) {
         showErrorAlert(window, "Error", headerText, contentText);
     }
+    
+     public static void showErrorAlert( String headerText, String contentText) {
+        showErrorAlert(null, "Error", headerText, contentText);    
+    }
 
     public static void showErrorAlert(Window window, String contentText) {
         showErrorAlert(window, "Error", "Exception", contentText);

@@ -129,27 +129,28 @@ public abstract class UcrSelectorCombobox<S> extends UcrCoreControl {
     public void select(int index) {
         getControl().getSelectionModel().select(index);
     }
-    
-      public void select(S obj) {
+
+    public void select(S obj) {
         getControl().getSelectionModel().select(obj);
     }
 
-      /**
-       * deprecated
-       * @param strMember 
-       */
+    /**
+     * deprecated
+     *
+     * @param strMember
+     */
     public void selectValue(String strMember) {
         setValue(strMember);
     }
 
     /**
      * deprecated
-     * @param obj 
+     *
+     * @param obj
      */
     public void selectValue(int obj) {
         setValue(obj);
     }
-
 
     //@Override
     //public void setValue(Object objValue) {
@@ -199,7 +200,8 @@ public abstract class UcrSelectorCombobox<S> extends UcrCoreControl {
         if (getControl().isEditable()) {
             return getControl().getEditor().getText().trim().length() <= 0;
         } else {
-            return getControl().getValue() == null || getControl().getValue().toString().length() <= 0;
+            //return getControl().getValue() == null || getControl().getValue().toString().length() <= 0;
+            return getControl().getItems().isEmpty();
         }
 
     }

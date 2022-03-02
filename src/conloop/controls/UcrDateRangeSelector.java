@@ -64,6 +64,5 @@ public class UcrDateRangeSelector {
     public void setValueChangedEventListener(CustomChangeEventListener listener) {
         ucrDateFrom.setValueChangedEventListener(listener);
         ucrDateTo.setValueChangedEventListener(listener);
-
     }
 }

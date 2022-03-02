@@ -37,12 +37,12 @@ public class UcrDialog {
     private Window window;
     private boolean bResizable;
 
-    public UcrDialog(Class classLoader) {
-        frmLoader = new FXFormLoader(classLoader);
+    public UcrDialog(Class clazz) {
+        frmLoader = new FXFormLoader(clazz);
     }
 
-    public UcrDialog(Class classLoader, Window window, String filePathAndName, String title) {
-        this(classLoader);
+    public UcrDialog(Class clazz, Window window, String filePathAndName, String title) {
+        this(clazz);
         setWindow(window);
         setFilePathAndName(filePathAndName);
         setTitle(title);
