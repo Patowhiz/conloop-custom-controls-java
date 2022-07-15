@@ -10,6 +10,8 @@ import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
@@ -96,7 +98,11 @@ public class UcrSpreadSheet extends UcrCoreControl {
         spreadSheetView.setGrid(grid);
     }
 
-    public void setGrid(ObservableList<String> columnHeaders) {
+    public void setGrid(String... columnHeaders) {
+        setGrid(Arrays.asList(columnHeaders));
+    }
+
+    public void setGrid(List<String> columnHeaders) {
         setGrid(new GridBase(1, columnHeaders.size()));//rows count will be readjusted as its filled
         setColumnHeaderNames(columnHeaders);
     }
@@ -137,7 +143,7 @@ public class UcrSpreadSheet extends UcrCoreControl {
         spreadSheetView.getColumns().get(iColumnIndex).setPrefWidth(dWidth);
     }
 
-    private void setColumnHeaderNames(ObservableList<String> columnHeaders) {
+    private void setColumnHeaderNames(List<String> columnHeaders) {
         getColumnHeaders().setAll(columnHeaders);
     }
 
@@ -180,8 +186,8 @@ public class UcrSpreadSheet extends UcrCoreControl {
     public void addRowPickerMenuItemsListener(PickerEventListener listener) {
         this.lstRowPickersMenuItemlistener.add(listener);
     }
-    
-     public void clearRowPickerMenuItemsListener() {
+
+    public void clearRowPickerMenuItemsListener() {
         this.lstRowMenuItems.clear();
     }
 
@@ -301,7 +307,7 @@ public class UcrSpreadSheet extends UcrCoreControl {
         } else if (cellContent instanceof Integer) {
             cell = SpreadsheetCellType.INTEGER.createCell(rowIndex, columnIndex, 1, 1, (Integer) cellContent);
         } else if (cellContent instanceof Long) {
-            cell = SpreadsheetCellType.STRING.createCell(rowIndex, columnIndex, 1, 1, String.valueOf((Long)cellContent) );
+            cell = SpreadsheetCellType.STRING.createCell(rowIndex, columnIndex, 1, 1, String.valueOf((Long) cellContent));
         } else if (cellContent instanceof Double) {
             cell = SpreadsheetCellType.DOUBLE.createCell(rowIndex, columnIndex, 1, 1, (Double) cellContent);
         } else if (cellContent instanceof java.sql.Date) {
@@ -335,6 +341,30 @@ public class UcrSpreadSheet extends UcrCoreControl {
         SpreadsheetCell cell;
         cell = SpreadsheetCellType.LIST(lstItems).createCell(rowIndex, columnIndex, 1, 1, cellContent);
 
+        return cell;
+    }
+
+    /**
+     * Sets the control passed as a cell of the spreadsheet
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @param control. The control to add as a cell. NULL is NOT allowed.
+     * Controls supported; Hyperlink, checkbox
+     * @param cellContent. The contents to set to the control.
+     * @return
+     */
+    public static SpreadsheetCell createSingleSpanNodeCell(int rowIndex, int columnIndex, Control control, Object cellContent) {
+        SpreadsheetCell cell = SpreadsheetCellType.STRING.createCell(rowIndex, columnIndex, 1, 1, null);
+        if (control instanceof Hyperlink) {
+            ((Hyperlink) control).setText(String.valueOf(cellContent));
+        } else if (control instanceof CheckBox) {
+            if (cellContent != null) {
+                ((CheckBox) control).setSelected((Boolean) cellContent);
+            }
+        }
+
+        cell.setGraphic(control);
         return cell;
     }
 

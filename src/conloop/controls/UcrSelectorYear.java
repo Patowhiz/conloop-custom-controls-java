@@ -2,7 +2,7 @@ package conloop.controls;
 
 import conloop.CalendarDateUtil;
 import java.util.List;
-import javafx.scene.control.ComboBox; 
+import javafx.scene.control.ComboBox;
 
 /**
  *
@@ -19,8 +19,8 @@ public class UcrSelectorYear extends UcrSelectorCombobox<Integer> {
     public void populateControl() {
         try {
             getControl().getItems().clear();
-            //get a list of the last 7 years incuding this one
-            final List<Integer> yrMnth = CalendarDateUtil.getListofLastYears(CalendarDateUtil.getCurrentYear(), 5, true);
+            //get a list of the last 7 years incuding this one. Note, include the year after. 
+            final List<Integer> yrMnth = CalendarDateUtil.getListofLastYears(CalendarDateUtil.getCurrentYear() + 1, 5, true);
             for (int i = yrMnth.size() - 1; i >= 0; i--) {
                 getControl().getItems().add(yrMnth.get(i));
             }
@@ -31,7 +31,6 @@ public class UcrSelectorYear extends UcrSelectorCombobox<Integer> {
 //            if (currentYear == 2021 && CalendarDateUtil.getCurrentTerm() < 3) {
 //                currentYear = currentYear - 1;//reset back to 2020 as selected year
 //            }
-
             setValue(CalendarDateUtil.getCurrentKenyaAcademicYear());
         } catch (Exception ex) {
             CustomAlerts.showDeveloperErrorAlert("Error occurred in loading teachers into the combobox", ex);

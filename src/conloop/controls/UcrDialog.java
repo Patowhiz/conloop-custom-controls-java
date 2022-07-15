@@ -31,11 +31,12 @@ import javax.swing.SwingUtilities;
  */
 public class UcrDialog {
 
-    private final FXFormLoader frmLoader;
+    private FXFormLoader frmLoader;
     private String title;
     private String headerText;
     private Window window;
     private boolean bResizable;
+    private Parent rootNode;
 
     public UcrDialog(Class clazz) {
         frmLoader = new FXFormLoader(clazz);
@@ -53,9 +54,19 @@ public class UcrDialog {
         setHeaderText(headerText);
     }
 
-    public UcrDialog(Class classLoader, Window window, Parent rootNode, String title, String headerText) {
-        this(classLoader, window, "", title, headerText);
-        setRootNode(rootNode);//for those that aleady have the root node inistialised
+    /**
+     * for those that already have the root node initialised
+     *
+     * @param rootNode
+     * @param window
+     * @param title
+     * @param headerText
+     */
+    public UcrDialog(Parent rootNode, Window window, String title, String headerText) {
+        setRootNode(rootNode);
+        setWindow(window);
+        setTitle(title);
+        setHeaderText(headerText);
     }
 
     public void setWindow(Window clsWindow) {
@@ -63,7 +74,7 @@ public class UcrDialog {
     }
 
     public void setRootNode(Parent rootNode) {
-        this.frmLoader.setRootNode(rootNode);
+        this.rootNode = rootNode;
     }
 
     public void setTitle(String strtitle) {
@@ -93,14 +104,14 @@ public class UcrDialog {
         this.bResizable = bResizable;
     }
 
-    public void showAndWait() throws IOException {
+    private Dialog<String> buildDialog() throws IOException {
         // Create the custom dialog.
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle(title);
         dialog.setHeaderText(headerText);
         dialog.initOwner(window);
         dialog.initModality(window == null ? Modality.APPLICATION_MODAL : Modality.WINDOW_MODAL);
-        dialog.getDialogPane().setContent(frmLoader.getRootNode());
+        dialog.getDialogPane().setContent(rootNode == null ? frmLoader.getRootNode() : rootNode);
         dialog.setResizable(bResizable);
 
         //The below code is meant to make this dialog closeable via the close x on top of the window
@@ -120,13 +131,29 @@ public class UcrDialog {
             }
         });
 
-        dialog.showAndWait();
+        return dialog;
 
     }//end method
 
+    public void showAndWait() throws IOException {
+        buildDialog().showAndWait();
+    }
+
+    public void show() throws IOException {
+        buildDialog().show();
+    }
+
+    public void dispose() {
+        rootNode = null;
+        if (frmLoader != null) {
+            frmLoader.dispose();
+            frmLoader = null;
+        }
+    }
+
     /**
      * This is for showing JavaFX content inside the Swing JDialog. All the
-     * swing threads have taken care of
+     * swing threads have taken care of. left here for future refernce
      */
     public void showAndWaitSwingJDialog() {
         //This method is invoked on the EDT thread

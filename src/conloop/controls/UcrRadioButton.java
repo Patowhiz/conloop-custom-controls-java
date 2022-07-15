@@ -13,8 +13,8 @@ public class UcrRadioButton extends UcrCoreControl {
 
     private RadioButton rdButton;
 
-    public UcrRadioButton(RadioButton chkBox) {
-        this.rdButton = chkBox;
+    public UcrRadioButton(RadioButton rdButton) {
+        this.rdButton = rdButton;
         setDefaultListeners();
     }
 
